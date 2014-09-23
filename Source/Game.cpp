@@ -3,7 +3,7 @@
 #include "Game.h"
 
 CGame::CGame(){
-	estado = 0;
+	
 }
 
 // Con esta función eliminaremos todos los elementos en pantalla
@@ -27,6 +27,19 @@ bool CGame::Start()
 				salirJuego = true;
 			break;
 		};
-    }
-	return true;
+		switch(estado){
+
+			case Estado::ESTADO_INICIANDO: 
+			break;
+
+			case Estado::ESTADO_JUGANDO:
+			break;
+			case Estado::ESTADO_TERMINANDO: 
+			break;
+			};
+
+		salirJuego = true;
+
+			}
+			return true;
 }
