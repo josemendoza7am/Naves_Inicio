@@ -5,6 +5,7 @@
 #include <SDL_image.h>
 
 CGame::CGame(){
+	///ACT2: Mal, falta indicar al juego cual sera tu estado inicial, con cual iniciara.
 	atexit(SDL_Quit);
 }
 
@@ -22,7 +23,7 @@ bool CGame::Start()
             
 		//Maquina de estados
 	
-		switch(estado){
+		switch(estado){///ACT2: Mal, falto agregar otros 2 estados.
 
 			case Estado::ESTADO_INICIANDO: 
 			break;
