@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -26,7 +26,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -72,18 +72,18 @@
     <ClCompile Include="..\Source\main.cpp" />
     <ClCompile Include="..\Source\Game.cpp" />
     <ClCompile Include="..\Source\Nave.cpp" />
-    <ClCompile Include="..\Source\sprite.cpp" />
+    <ClCompile Include="..\Source\Sprite.cpp" />
     <ClCompile Include="..\Source\SpriteDef.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Source\config.h" />
+    <ClInclude Include="..\Source\Config.h" />
     <ClInclude Include="..\Source\Game.h" />
     <ClInclude Include="..\Source\Nave.h" />
-    <ClInclude Include="..\Source\sprite.h" />
+    <ClInclude Include="..\Source\Sprite.h" />
     <ClInclude Include="..\Source\SpriteDef.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Ejecutable\readme.txt" />
+    <None Include="..\Ejecutable\Readme.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

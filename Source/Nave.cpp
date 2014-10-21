@@ -1,17 +1,40 @@
 #include "Nave.h"
-#include "config.h"
+#include "Config.h"
 
-Nave::Nave(SDL_Surface*screen, char* rutaImagen){
-
-sprite=new Sprite (screen);
-sprite->CargaImagen(rutaImagen);
-
-x= (WIDTH_SCREEN/2)-(sprite->widthModule(0)/2);
-y=(HEIGHT_SCREEN-80)-(sprite->Heightmodule(0));
+Nave::Nave(SDL_Surface * screen, char * rutaImagen, int x, int )
+{
+	sprite = new Sprite(screen);
+	sprite->CargarImagen(rutaImagen);
+	this->x = x;
+	this->y = y;
+	autoMovimiento = false;
 }
-void Nave::pintar(){
-	sprite->PintarModulo(0,x,y);
+
+void Nave::SetAutoMovimiento(bool autoMovimiento)
+{
+	this->autoMovimiento = autoMovimiento;
 }
-void Nave :: mover(int posicion){
+
+void Nave::Actualizar()
+{
+	if (autoMovimiento)
+	{
+		MoverX(1);
+	}
+}
+
+void Nave::Pintar()
+{
+	sprite->PintarModulo(0, x, y);
+}
+
+void Nave :: MoverX(int posicion)
+{
 	x += posicion;
 }
+
+//Esto es opcional
+//void Nave ::MoverY(int posicion)
+//{
+//	y += posicion;
+//}

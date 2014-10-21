@@ -21,7 +21,7 @@
     <ClCompile Include="..\Source\Game.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\sprite.cpp">
+    <ClCompile Include="..\Source\Sprite.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\SpriteDef.cpp">
@@ -32,13 +32,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Source\Config.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
     <ClInclude Include="..\Source\Game.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\config.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\sprite.h">
+    <ClInclude Include="..\Source\Sprite.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\SpriteDef.h">
@@ -49,7 +49,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Ejecutable\readme.txt">
+    <None Include="..\Ejecutable\Readme.txt">
       <Filter>Archivos de recursos</Filter>
     </None>
   </ItemGroup>

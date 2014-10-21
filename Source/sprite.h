@@ -1,24 +1,19 @@
-#ifndef _SPRITE_H_
-#define _SPRITE_H_
+#ifndef __SPRITE_H__
+#define __SPRITE_H__
 #include <SDL.h>
 #include "SpriteDef.h"
 
-
-class Sprite{
-	SDL_Surface*imagen;
-	SDL_Surface * screen;
-	SpriteDef spriteDef;
-
+class Sprite
+{
+	SDL_Surface * imagen; //Imagen a manipular
+	SDL_Surface * screen; //Pantalla
+	SpriteDef spriteDef; //Definicion de sprite
 public:
-	Sprite(SDL_Surface * screen);
-	~Sprite();
-	void CargaImagen(char * nombre);
-	void PintarModulo(int nombre,int x,int y,int w, int h);
-	void PintarModulo(int nombre,int x,int y);
-	int widthModule(int module);
-	int Heightmodule(int module);
+	Sprite(SDL_Surface *Screen); //Constructor
+	~Sprite(); //Destructor, se manda llamar con delete
+	void CargarImagen(char * nombre);
+	void PintarModulo(int nombre, int x, int y);
+	int WidthModule(int module);
+	int HeightModule(int module);
 };
-
-
 #endif
-
