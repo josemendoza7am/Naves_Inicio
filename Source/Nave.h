@@ -7,14 +7,25 @@ class Nave
 	Sprite *sprite;
 	int x;
 	int y;
+	int w;
+	int h;
 	bool autoMovimiento;
+	int pasoActual;
+	int pasoLimite;
 public:
 	void MoverX(int posicion);
 	//void MoverY(int posicion);
 	Nave(SDL_Surface * screen, char * rutaImagen, int x, int y); //Constructor
 	void SetAutoMovimiento(bool autoMovimiento);
+	void setPasoLimite(int pasos);
+	int obtenerPasoActual();
+	void IncrementarPasoActual();
 	void Pintar();
 	void Actualizar();
+	int ObtenerX();
+	int ObtenerY();
+	int ObtenerW();
+	int ObtenerH();
 };
 
 

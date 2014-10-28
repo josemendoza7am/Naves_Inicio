@@ -55,7 +55,8 @@ void CGame::Iniciando()
 
 	nave = new Nave(screen, "../Data/minave.bmp", (WIDTH_SCREEN / 2) /*- (sprite->WidthModule(0) / 2)*/, (HEIGHT_SCREEN - 80) /*- sprite->HeightModule(0)*/);
 	enemigo = new Nave(screen, "../Data/enemigo.bmp", 0, 0);
-	enemigo->SetAutoMovimiento(true);
+	enemigo->SetAutoMovimiento(false);
+	enemigo->setPasoLimite(4);
 
 	//delete nave;
 }
@@ -90,18 +91,38 @@ bool CGame::Start()
 			break;
 		case Estado::ESTADO_JUGANDO:	//JUGAR	
 			enemigo->Actualizar();
+			MoverEnemigo();
 			SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 0, 0, 0));
 			keys = SDL_GetKeyState(NULL);
-			if (keys[SDLK_RIGHT])
-			{
-				nave->MoverX(1);
-			}//Los 3 casos siguientes son el primero aplicado a las demás direcciones
 			if (keys[SDLK_LEFT])
 			{
+				if (!EsLimitePantalla(nave,BORDE_IZQUIERDO))
 				nave->MoverX(-1);
+				
+			}
+			
+			if (keys[SDLK_RIGHT])
+			{
+				if (!EsLimitePantalla(nave,BORDE_DERECHO))
+				nave->MoverX(1);
+				
+			}//Los 3 casos siguientes son el primero aplicado a las demás direcciones
+			
+
+			//Mover en Y, arriba y abajo (opcional)
+			/*if (keys[SDLK_UP])
+			{
+			if (!EsLimitePantalla(nave))
+			nave->MoverY(-1);
 			}
 
-			
+			if (keys[SDLK_DOWN])
+			{
+			if (!EsLimitePantalla(nave))
+			nave->MoverY(1);
+			}*/
+			//Aqui termina Y
+
 			nave->Pintar();
 			enemigo->Pintar();
 
@@ -133,4 +154,46 @@ bool CGame::Start()
 		SDL_Flip(screen);
 	}
 	return true;
+}
+
+bool CGame::EsLimitePantalla(Nave * objeto, int bandera)
+{
+	if (bandera & BORDE_IZQUIERDO)
+		if (objeto->ObtenerX() <= 0)
+			return true;
+	if (bandera & BORDE_SUPERIOR)
+		if (objeto->ObtenerY() <= 0)
+		return true;
+	if (bandera & BORDE_DERECHO)
+	if (objeto->ObtenerX() >= WIDTH_SCREEN-objeto->ObtenerW())
+		return true;
+	if (bandera & BORDE_INFERIOR)
+	if (objeto->ObtenerY() >= HEIGHT_SCREEN-objeto->ObtenerH())
+		return true;
+	return false;
+}
+
+void CGame::MoverEnemigo()
+{
+	if(enemigo->obtenerPasoActual()==0)
+		if(!EsLimitePantalla(enemigo,BORDE_DERECHO))
+			enemigo->MoverX(1);//derecha
+	else{
+		enemigo->IncrementarPasoActual();
+		enemigo->IncrementarPasoActual();
+	}
+	//if(enemigo->obtenerPasoActual()==1)
+		//if(!EsLimitePantalla(enemigo,BORDE_INFERIOR))
+		//	enemigo->MoverX(1);//Abajo
+	if(enemigo->obtenerPasoActual()==2)
+		if(!EsLimitePantalla(enemigo,BORDE_IZQUIERDO))
+			enemigo->MoverX(-1);//izquierda
+	else{
+		enemigo->IncrementarPasoActual();
+		enemigo->IncrementarPasoActual();
+	}
+
+	//if(enemigo->obtenerPasoActual()==3)
+		//if(!EsLimitePantalla(enemigo,BORDE_INFERIOR))
+			//enemigo->MoverX(1);//Abajo
 }
