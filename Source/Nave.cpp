@@ -10,8 +10,8 @@ Nave::Nave(SDL_Surface * screen, char * rutaImagen, int x, int y)
 	this->x = x;
 	this->y = y;
 	autoMovimiento = false;
-	pasoActual=0;
-	pasoLimite=-1;
+	pasoActual = 0;
+	pasoLimite = -1;
 }
 
 void Nave::SetAutoMovimiento(bool autoMovimiento)
@@ -25,11 +25,13 @@ void Nave::Actualizar()
 	{
 		MoverX(1);
 	}
-	if(pasoLimite>0){
-	// pasoActual++;
-	 if(pasoActual>=pasoLimite)
-		 pasoActual=0;
+	if (pasoLimite > 0)
+	{
+		//pasoActual++;
+		if (pasoActual >= pasoLimite)
+			pasoActual = 0;
 	}
+
 }
 
 void Nave::Pintar()
@@ -42,11 +44,10 @@ void Nave :: MoverX(int posicion)
 	x += posicion;
 }
 
-//Esto es opcional
-//void Nave ::MoverY(int posicion)
-//{
-//	y += posicion;
-//}
+void Nave ::MoverY(int posicion)
+{
+	y += posicion;
+}
 
 int Nave :: ObtenerX()
 {
@@ -67,12 +68,18 @@ int Nave::ObtenerH()
 {
 	return h;
 }
-void Nave :: setPasoLimite(int pasos){
-	this ->pasoLimite = pasos;
+
+void Nave::SetPasoLimite(int pasos)
+{
+	this->pasoLimite = pasos;
 }
-int Nave::obtenerPasoActual(){
+
+int Nave::ObtenerPasoActual()
+{
 	return pasoActual;
 }
-void Nave::IncrementarPasoActual(){
+
+void Nave::IncrementarPasoActual()
+{
 	pasoActual++;
 }

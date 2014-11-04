@@ -1,3 +1,4 @@
+
 #ifndef __NAVE_H__
 #define __NAVE_H__
 #include "Sprite.h"
@@ -14,12 +15,13 @@ class Nave
 	int pasoLimite;
 public:
 	void MoverX(int posicion);
-	//void MoverY(int posicion);
+	void MoverY(int posicion);
 	Nave(SDL_Surface * screen, char * rutaImagen, int x, int y); //Constructor
 	void SetAutoMovimiento(bool autoMovimiento);
-	void setPasoLimite(int pasos);
-	int obtenerPasoActual();
+	void SetPasoLimite(int pasos);
+	int ObtenerPasoActual();
 	void IncrementarPasoActual();
+	bool EstaColisionando(Nave * b);
 	void Pintar();
 	void Actualizar();
 	int ObtenerX();
