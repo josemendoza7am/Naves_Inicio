@@ -28,5 +28,8 @@ private:
 	Nave * nave;
 	
 	Nave *enemigoArreglo [10];
+	int tick;
+	int tiempoFrame;
+
 	Estado estado;
 };

@@ -7,6 +7,7 @@
 
 CGame::CGame()
 {
+	tiempoFrame= 0;
 	estado = ESTADO_INICIANDO;
 	atexit(SDL_Quit);
 }
@@ -58,7 +59,8 @@ void CGame::Iniciando()
 		enemigoArreglo[i]->SetPasoLimite(4);
 	}
 
-	
+	tick=0;
+
 	
 
 	//delete nave;
@@ -163,6 +165,13 @@ bool CGame::Start()
 		}
 
 		SDL_Flip(screen);
+
+		// CALCULANDO FPS
+		int tiempoFrameFinal=SDL_GetTicks();
+		printf("%d %d %f %d  \n",tick,SDL_GetTicks(), (float)SDL_GetTicks()/(float)tick,tiempoFrameFinal-tiempoFrame);
+		tiempoFrame=tiempoFrameFinal;//marcamos el inicio nuevamente
+		tick++;
+
 	}
 	return true;
 }
