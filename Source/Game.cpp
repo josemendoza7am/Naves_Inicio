@@ -7,7 +7,7 @@
 
 CGame::CGame()
 {
-	tiempoFrame= 0;
+	tiempoFrameInicial= 0;
 	estado = ESTADO_INICIANDO;
 	atexit(SDL_Quit);
 }
@@ -106,14 +106,14 @@ bool CGame::Start()
 			if (keys[SDLK_LEFT])
 			{
 				if (!EsLimitePantalla(nave, BORDE_IZQUIERDO))
-					nave->MoverX(-2);
+					nave->MoverX(-10);
 
 			}
 
 			if (keys[SDLK_RIGHT])
 			{
 				if (!EsLimitePantalla(nave, BORDE_DERECHO))
-					nave->MoverX(2);
+					nave->MoverX(10);
 
 			}//Los 3 casos siguientes son el primero aplicado a las demás direcciones
 
@@ -122,13 +122,13 @@ bool CGame::Start()
 			if (keys[SDLK_UP])
 			{
 			if (!EsLimitePantalla(nave, BORDE_SUPERIOR))
-			nave->MoverY(-2);
+			nave->MoverY(-10);
 			}
 
 			if (keys[SDLK_DOWN])
 			{
 			if (!EsLimitePantalla(nave, BORDE_INFERIOR))
-			nave->MoverY(2);
+			nave->MoverY(10);
 			}
 			//Aqui termina Y
 
@@ -167,9 +167,14 @@ bool CGame::Start()
 		SDL_Flip(screen);
 
 		// CALCULANDO FPS
-		int tiempoFrameFinal=SDL_GetTicks();
-		printf("%d %d %f %d  \n",tick,SDL_GetTicks(), (float)SDL_GetTicks()/(float)tick,tiempoFrameFinal-tiempoFrame);
-		tiempoFrame=tiempoFrameFinal;//marcamos el inicio nuevamente
+		tiempoFrameFinal=SDL_GetTicks();
+		while (tiempoFrameFinal < (tiempoFrameInicial+ FPS_DELAY)){
+			tiempoFrameFinal=SDL_GetTicks();
+			SDL_Delay(1);
+		}
+
+		printf("Frames:%d Tiempo:%d Tiempo promedio:%f tiempo por Frame:%d FPS:%f \n",tick,SDL_GetTicks(), (float)SDL_GetTicks()/(float)tick,tiempoFrameFinal-tiempoFrameInicial, 1000.0f/(float)(tiempoFrameFinal-tiempoFrameInicial));
+		tiempoFrameInicial=tiempoFrameFinal;//marcamos el inicio nuevamente
 		tick++;
 
 	}
@@ -202,7 +207,7 @@ void CGame::MoverEnemigo()
 		//// paso 0
 		if (enemigoArreglo[i]->ObtenerPasoActual() == 0)
 			if (!EsLimitePantalla(enemigoArreglo[i], BORDE_DERECHO))
-				enemigoArreglo[i]->MoverX(1);
+				enemigoArreglo[i]->MoverX(10);
 			else
 			{
 				enemigoArreglo[i]->IncrementarPasoActual();
@@ -211,11 +216,11 @@ void CGame::MoverEnemigo()
 			//// paso 1
 		if (enemigoArreglo[i]->ObtenerPasoActual() == 1)
 			if (!EsLimitePantalla(enemigoArreglo[i], BORDE_INFERIOR))
-				enemigoArreglo[i]->MoverY(2);//ABAJO
+				enemigoArreglo[i]->MoverY(10);//ABAJO
 		//// paso 2
 		if (enemigoArreglo[i]->ObtenerPasoActual() == 2)
 			if (!EsLimitePantalla(enemigoArreglo[i], BORDE_IZQUIERDO))
-				enemigoArreglo[i]->MoverX(-1);//IZQUIERDA
+				enemigoArreglo[i]->MoverX(-10);//IZQUIERDA
 			else
 			{
 				enemigoArreglo[i]->IncrementarPasoActual();
@@ -224,7 +229,7 @@ void CGame::MoverEnemigo()
 			//// paso 3
 		if (enemigoArreglo[i]->ObtenerPasoActual() == 3)
 			if (!EsLimitePantalla(enemigoArreglo[i], BORDE_INFERIOR))
-				enemigoArreglo[i]->MoverX(2);//ABAJO
+				enemigoArreglo[i]->MoverX(10);//ABAJO
 	}
 
 }
