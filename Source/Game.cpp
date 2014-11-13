@@ -210,13 +210,19 @@ void CGame::MoverEnemigo()
 				enemigoArreglo[i]->MoverX(10);
 			else
 			{
-				enemigoArreglo[i]->IncrementarPasoActual();
+				//enemigoArreglo[i]->IncrementarPasoActual();
 				enemigoArreglo[i]->IncrementarPasoActual();
 			}
 			//// paso 1
 		if (enemigoArreglo[i]->ObtenerPasoActual() == 1)
 			if (!EsLimitePantalla(enemigoArreglo[i], BORDE_INFERIOR))
 				enemigoArreglo[i]->MoverY(10);//ABAJO
+			else
+			{
+				enemigoArreglo[i]->IncrementarPasoActual();
+				//enemigoArreglo[i]->IncrementarPasoActual();
+			}
+
 		//// paso 2
 		if (enemigoArreglo[i]->ObtenerPasoActual() == 2)
 			if (!EsLimitePantalla(enemigoArreglo[i], BORDE_IZQUIERDO))
@@ -224,12 +230,17 @@ void CGame::MoverEnemigo()
 			else
 			{
 				enemigoArreglo[i]->IncrementarPasoActual();
-				enemigoArreglo[i]->IncrementarPasoActual();
+				//enemigoArreglo[i]->IncrementarPasoActual();
 			}
 			//// paso 3
 		if (enemigoArreglo[i]->ObtenerPasoActual() == 3)
 			if (!EsLimitePantalla(enemigoArreglo[i], BORDE_INFERIOR))
 				enemigoArreglo[i]->MoverX(10);//ABAJO
+		else
+			{
+				enemigoArreglo[i]->IncrementarPasoActual();
+				//enemigoArreglo[i]->IncrementarPasoActual();
+			}
 	}
 
 }
