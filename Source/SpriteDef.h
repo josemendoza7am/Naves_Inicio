@@ -13,7 +13,7 @@ public:
 		int h;
 	};
 public:
-	Modulos modulos[1];
+	Modulos modulos[9];//numero de modulos
 	SpriteDef();
 };
 

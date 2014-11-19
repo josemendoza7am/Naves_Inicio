@@ -10,7 +10,9 @@ CGame::CGame()
 	tiempoFrameInicial= 0;
 	estado = ESTADO_INICIANDO;
 	atexit(SDL_Quit);
+
 }
+
 
 // Con esta función eliminaremos todos los elementos en pantalla
 void CGame::Finalize()
@@ -32,6 +34,7 @@ void CGame::Iniciando()
 		exit(EXIT_FAILURE);
 	}
 
+
 	screen = SDL_SetVideoMode(WIDTH_SCREEN, HEIGHT_SCREEN, 24, SDL_HWSURFACE);
 	/*if (screen == NULL)
 	{
@@ -49,18 +52,21 @@ void CGame::Iniciando()
 
 	SDL_WM_SetCaption("Mi primer Juego", NULL);
 
-	nave = new Nave(screen, "../Data/minave.bmp", (WIDTH_SCREEN / 2) /*- (sprite->WidthModule(0) / 2)*/, (HEIGHT_SCREEN - 80) /*- sprite->HeightModule(0)*/);
-	
+	nave = new Nave(screen, "../Data/minave.bmp", (WIDTH_SCREEN / 2) , (HEIGHT_SCREEN - 80),MODULO_MINAVE_NAVE);
+	menu = new Nave (screen,"../Data/fondo menu.bmp ",0,0,MODULO_MENU_FONDO_MENU);
+	textos = new Nave(screen,"../data/MENU  SPACE WAR.bmp",0,0,-1);
+
 
 	for (int i = 0; i < 10; i++)
 	{
-		enemigoArreglo[i] = new Nave(screen, "../Data/enemigo.bmp", i * 60, 0);
+		enemigoArreglo[i] = new Nave(screen, "../Data/enemigo.bmp", i * 60, 0,MODULO_ENEMIGO_NAVE);
 		enemigoArreglo[i]->SetAutoMovimiento(false);
 		enemigoArreglo[i]->SetPasoLimite(4);
 	}
 
 	tick=0;
 
+	opcionSeleccionada =MODULO_TEXTOS_MENU_OPCION1;
 	
 
 	//delete nave;
@@ -80,20 +86,19 @@ bool CGame::Start()
 			printf("1. ESTADO_INICIANDO");
 			Iniciando();
 			estado = ESTADO_MENU;
+			
 			break;
 		case Estado::ESTADO_MENU: //MENÚ
-			if (i == 0) //bandera que controla que el programa mande a ESTADO_MENU sin regresar a ESTADO_JUGANDO
-			{
-				printf("\n2. ESTADO_MENU");
-				estado = ESTADO_JUGANDO;
-				i = 1;
-			}
-			else
-			{
-				printf("\n2. ESTADO_MENU");
-				estado = ESTADO_FINALIZANDO;
-			}
+			menu->Pintar();
+			textos-> Pintar(MODULO_TEXTOS_TITULO,100,50);
+			textos->Pintar(MODULO_TEXOS_NOMBRE,300,390);
+			//textos-> Pintar(MODULO_TEXTOS_MENU_OPCION1,400,100);
+			//textos->Pintar(MODULO_TEXTOS_MENU_OPCION2,400,150);
+
+			Menu();
+
 			break;
+
 		case Estado::ESTADO_JUGANDO:	//JUGAR	
 			
 			for (int i = 0; i < 10; i++)
@@ -133,6 +138,7 @@ bool CGame::Start()
 			//Aqui termina Y
 
 			nave->Pintar();
+
 			
 			for (int i = 0; i < 10; i++)
 			{
@@ -147,14 +153,9 @@ bool CGame::Start()
 			break;
 
 		case Estado::ESTADO_TERMINANDO: //SALIR
-			printf("\n4. ESTADO_TERMINANDO");
-			estado = ESTADO_MENU;
 			break;
 
 		case Estado::ESTADO_FINALIZANDO: //FINALIZAR
-			printf("\n5. ESTADO_FINALIZANDO");
-			getchar();
-			salirJuego = true;
 			break;
 		}
 
@@ -165,6 +166,9 @@ bool CGame::Start()
 		}
 
 		SDL_Flip(screen);
+
+	
+
 
 		// CALCULANDO FPS
 		tiempoFrameFinal=SDL_GetTicks();
@@ -178,6 +182,7 @@ bool CGame::Start()
 		tick++;
 
 	}
+
 	return true;
 }
 
@@ -248,4 +253,14 @@ void CGame::MoverEnemigo()
 bool Nave::EstaColisionando(Nave * b)
 {
 	return false;
+}
+
+void CGame:: Menu(){
+	for (int i = MODULO_TEXTOS_MENU_OPCION1, j=0; i <=MODULO_TEXTOS_MENU_OPCION2; i++ ,j++ ){
+
+		if (i== opcionSeleccionada)
+			textos->Pintar(i+2,200, 180+(j*80));
+
+		textos->Pintar (i, 200, 180+(j*80));
+	}
 }

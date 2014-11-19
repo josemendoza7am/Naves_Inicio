@@ -13,4 +13,18 @@
 #define FPS_LIMIT 30.0f
 #define FPS_DELAY 1000.0f / FPS_LIMIT
 
+/******sprites*****/
+//#tipo_imagen_nombre
+
+#define MODULO_MINAVE_NAVE                       0
+#define MODULO_MENU_FONDO_MENU                   1
+#define MODULO_ENEMIGO_NAVE                      2
+#define MODULO_TEXTOS_TITULO                     3
+#define MODULO_TEXOS_NOMBRE                      4
+#define MODULO_TEXTOS_MENU_OPCION1               5
+#define MODULO_TEXTOS_MENU_OPCION2               6
+#define MODULO_TEXTOS_MENU_OPCION1_SELECCIONADO  7
+#define MODULO_TEXTOS_MENU_OPCION2_SELECCIONADO  8
+
+
 #endif
