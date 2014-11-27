@@ -1,93 +1,30 @@
-#include "Nave.h"
-#include "Config.h"
+#include "nave.h"
+#include "config.h"
 
-Nave::Nave(SDL_Surface * screen, char * rutaImagen, int x, int y,int module)
-{
 
-	this->module=module;
-	sprite = new Sprite(screen);
-	sprite->CargarImagen(rutaImagen);
-	w = sprite->WidthModule(this->module);
-	h = sprite->HeightModule(this->module);
-	this->x = x;
-	this->y = y;
-	autoMovimiento = false;
-	pasoActual = 0;
-	pasoLimite = -1;
+Nave::Nave(SDL_Surface * screen, char * rutaImagen, int x, int y, int module){
+	nave= new Objeto(screen,rutaImagen,x,y,module);
+	bala =new Objeto (screen, "../data/balas.bmp",0,0, MODULO_BALAS_BALA);
+	bala-> SetVisible(false);
 }
 
-void Nave::SetAutoMovimiento(bool autoMovimiento)
-{
-	this->autoMovimiento = autoMovimiento;
+void Nave:: Pintar (){
+	nave ->Pintar();
+	bala->Pintar();
+	bala->MoverY(-10);
 }
 
-void Nave::Actualizar()
-{
-	if (autoMovimiento)
-	{
-		MoverX(1);
-	}
-	if (pasoLimite > 0)
-	{
-		//pasoActual++;
-		if (pasoActual >= pasoLimite)
-			pasoActual = 0;
-	}
-
+void Nave::Disparar(){
+	bala->SetVisible(true);
+	bala->PonerEn (nave->ObtenerX()+nave->ObtenerW()/2,nave->ObtenerY());
+	
 }
 
-void Nave::Pintar()
-{
-	sprite->PintarModulo(module, x, y);
-}
+void Nave:: MoverAbajo(){nave->MoverY(10);}
+void Nave:: MoverArriba(){nave->MoverY(-10);}
+void Nave:: MoverDerecha(){nave->MoverX(10);}
+void Nave::MoverIzquierda(){nave->MoverX(-10);}
 
-void Nave::Pintar(int module, int x, int y)
-{
-	sprite->PintarModulo(module, x, y);
-}
-
-
-void Nave :: MoverX(int posicion)
-{
-	x += posicion;
-}
-
-void Nave ::MoverY(int posicion)
-{
-	y += posicion;
-}
-
-int Nave :: ObtenerX()
-{
-	return x;
-}
-
-int Nave::ObtenerY()
-{
-	return y;
-}
-
-int Nave::ObtenerW()
-{
-	return w;
-}
-
-int Nave::ObtenerH()
-{
-	return h;
-}
-
-void Nave::SetPasoLimite(int pasos)
-{
-	this->pasoLimite = pasos;
-}
-
-int Nave::ObtenerPasoActual()
-{
-	return pasoActual;
-}
-
-void Nave::IncrementarPasoActual()
-{
-	pasoActual++;
+Objeto*Nave::GetNaveObjeto(){
+	return nave;
 }
