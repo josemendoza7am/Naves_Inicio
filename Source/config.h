@@ -28,4 +28,8 @@
 #define MODULO_BALAS_BALA                         9
 
 
+#define MAXIMO_DE_BALAS     40
+#define NAVE_PROPIA   0
+#define NAVE_ENEMIGO  1
+
 #endif

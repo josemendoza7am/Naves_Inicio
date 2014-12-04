@@ -4,27 +4,69 @@
 
 Nave::Nave(SDL_Surface * screen, char * rutaImagen, int x, int y, int module){
 	nave= new Objeto(screen,rutaImagen,x,y,module);
-	bala =new Objeto (screen, "../data/balas.bmp",0,0, MODULO_BALAS_BALA);
-	bala-> SetVisible(false);
+	for (int i=0; i<MAXIMO_DE_BALAS;i++){
+		bala[i] =new Objeto (screen, "../data/balas.bmp",0,0, MODULO_BALAS_BALA);
+		bala[i]-> SetVisible(false);
+	}
+	balaVisibles=0;
 }
 
-void Nave:: Pintar (){
+void Nave:: Pintar (int tipoNave){
 	nave ->Pintar();
-	bala->Pintar();
-	bala->MoverY(-10);
-}
+	for (int i = 0; i < MAXIMO_DE_BALAS; i++)
+	{
+		bala[i]->Pintar();
+		switch (tipoNave)
+		{
+		case NAVE_PROPIA:
+			bala[i]->MoverY(-10);
+			break;
 
-void Nave::Disparar(){
-	bala->SetVisible(true);
-	bala->PonerEn (nave->ObtenerX()+nave->ObtenerW()/2,nave->ObtenerY());
+		case NAVE_ENEMIGO:
+			bala[i]->MoverY(10);
+			break;
+		}
+		
+	}
 	
 }
 
-void Nave:: MoverAbajo(){nave->MoverY(10);}
-void Nave:: MoverArriba(){nave->MoverY(-10);}
-void Nave:: MoverDerecha(){nave->MoverX(10);}
-void Nave::MoverIzquierda(){nave->MoverX(-10);}
+void Nave::Disparar(int tipoNave, int Balas){
+	
+	bala[balaVisibles]->SetVisible(true);
+	switch (tipoNave)
+	{
+	case NAVE_PROPIA:
+		bala[balaVisibles]->PonerEn (nave->ObtenerX()+nave->ObtenerW()/2,nave->ObtenerY());
+		break;
+	case NAVE_ENEMIGO:
+		bala[balaVisibles]->PonerEn (nave->ObtenerX()+nave->ObtenerW()/2,nave->ObtenerY()+nave->ObtenerH());
+		break;
+	}
+	
+	balaVisibles++;
+	if (balaVisibles>= Balas)
+	{
+		balaVisibles=0;
+
+	}
+
+	
+	
+}
+
+void Nave:: MoverAbajo(int velocidad){nave->MoverY(velocidad);}
+void Nave:: MoverArriba(int velocidad){nave->MoverY(-velocidad);}
+void Nave:: MoverDerecha(int velocidad){nave->MoverX(velocidad);}
+void Nave::MoverIzquierda(int velocidad){nave->MoverX(-velocidad);}
+
+
 
 Objeto*Nave::GetNaveObjeto(){
 	return nave;
+}
+
+void Nave::AutoDispara(int Balas){
+	if ((rand() % 100)<1)
+		Disparar(NAVE_ENEMIGO,Balas);
 }

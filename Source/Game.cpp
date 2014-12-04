@@ -61,9 +61,9 @@ void CGame::Iniciando()
 
 	for (int i = 0; i < 10; i++)
 	{
-		enemigoArreglo[i] = new Objeto (screen, "../Data/enemigo.bmp", i * 60, 0,MODULO_ENEMIGO_NAVE);
-		enemigoArreglo[i]->SetAutoMovimiento(false);
-		enemigoArreglo[i]->SetPasoLimite(4);
+		enemigoArreglo[i] = new Nave (screen, "../Data/enemigo.bmp", i * 60, 0,MODULO_ENEMIGO_NAVE);
+		enemigoArreglo[i]->GetNaveObjeto()-> SetAutoMovimiento(false);
+		enemigoArreglo[i]-> GetNaveObjeto()->SetPasoLimite(4);
 	}
 
 	tick=0;
@@ -87,6 +87,7 @@ bool CGame::Start()
 		case Estado::ESTADO_INICIANDO: //INICIALIZAR
 			printf("1. ESTADO_INICIANDO");
 			Iniciando();
+			InicializandoStage();
 			estado = ESTADO_MENU; //COMENTADO PARA QUE NOS MANDE AL JUEGO EN LUGAR Q EL MENU
 		//	estado = ESTADO_JUGANDO;
 			
@@ -101,12 +102,17 @@ bool CGame::Start()
 			Menu();
 
 			break;
+		case ESTADO_PRE_JUGANDO:
+			NivelActual=0;
+			estado= ESTADO_JUGANDO;
+
+			break;
 
 		case Estado::ESTADO_JUGANDO:	//JUGAR	
 			
 			for (int i = 0; i < 10; i++)
 			{
-				enemigoArreglo[i]->Actualizar();
+				enemigoArreglo[i]-> GetNaveObjeto() -> Actualizar();
 			}
 			MoverEnemigo();
 			fondo->Pintar();
@@ -115,14 +121,14 @@ bool CGame::Start()
 			if (keys[SDLK_LEFT])
 			{
 				if (!EsLimitePantalla(nave->GetNaveObjeto(), BORDE_IZQUIERDO))
-					nave->MoverIzquierda();
+					nave->MoverIzquierda(nivel[NivelActual].VelocidadNavePropia);
 
 			}
 
 			if (keys[SDLK_RIGHT])
 			{
 				if (!EsLimitePantalla(nave->GetNaveObjeto(), BORDE_DERECHO))
-					nave->MoverDerecha();
+					nave->MoverDerecha(nivel[NivelActual].VelocidadNavePropia);
 
 			}//Los 3 casos siguientes son el primero aplicado a las demás direcciones
 
@@ -131,25 +137,26 @@ bool CGame::Start()
 			if (keys[SDLK_UP])
 			{
 			if (!EsLimitePantalla(nave->GetNaveObjeto(), BORDE_SUPERIOR))
-				nave->MoverArriba();
+				nave->MoverArriba(nivel[NivelActual].VelocidadNavePropia);
 			}
 
 			if (keys[SDLK_DOWN])
 			{
 			if (!EsLimitePantalla(nave->GetNaveObjeto(), BORDE_INFERIOR))
-				nave->MoverAbajo();
+				nave->MoverAbajo(nivel[NivelActual].VelocidadNavePropia);
 			}
 			//Aqui termina Y
 			if (keys[SDLK_SPACE]){
-				nave->Disparar();
+				nave->Disparar(NAVE_PROPIA, nivel[NivelActual].BalasMaximas);
 			}
 
-			nave-> Pintar();
+			nave-> Pintar(NAVE_PROPIA);
 
 			
 			for (int i = 0; i < 10; i++)
 			{
-				enemigoArreglo[i]->Pintar();
+				enemigoArreglo[i]->Pintar(NAVE_ENEMIGO);
+				enemigoArreglo[i]->AutoDispara(nivel[NivelActual].BalasMaximas);
 			}
 
 			if (keys[SDLK_SPACE]) //Para evitar que se cicle en un estado, Pulsamos la tecla Abajo (en ese caso) y esa tecla nos dice que estamos en ESTADO_JUGANDO y nos manda a ESTADO_TERMINANDO;
@@ -216,45 +223,45 @@ void CGame::MoverEnemigo()
 
 	{
 		//// paso 0
-		if (enemigoArreglo[i]->ObtenerPasoActual() == 0)
-			if (!EsLimitePantalla(enemigoArreglo[i], BORDE_DERECHO))
+		if (enemigoArreglo[i]->GetNaveObjeto()->ObtenerPasoActual() == 0)
+			if (!EsLimitePantalla(enemigoArreglo[i]->GetNaveObjeto(),BORDE_DERECHO))
 			{
-				enemigoArreglo[i]->MoverX(10);
+				enemigoArreglo[i]->GetNaveObjeto()->MoverX(nivel[NivelActual].VelocidadNaveEnemigo);
 			}
 			else
 			{
-			enemigoArreglo[i]->IncrementarPasoActual();
+			enemigoArreglo[i]->GetNaveObjeto()-> IncrementarPasoActual();
 			}
 			//// paso 1
-		if (enemigoArreglo[i]->ObtenerPasoActual() == 1)
-			if (!EsLimitePantalla(enemigoArreglo[i], BORDE_INFERIOR))
-			{	enemigoArreglo[i]->MoverY(10);//ABAJO
+		if (enemigoArreglo[i]->GetNaveObjeto()->ObtenerPasoActual() == 1)
+			if (!EsLimitePantalla(enemigoArreglo[i]->GetNaveObjeto(), BORDE_INFERIOR))
+			{	enemigoArreglo[i]->GetNaveObjeto()->MoverY(nivel[NivelActual].VelocidadNaveEnemigo);//ABAJO
 		}
 			else
 			{
 		
-				enemigoArreglo[i]->IncrementarPasoActual();
+				enemigoArreglo[i]->GetNaveObjeto()->IncrementarPasoActual();
 			}
 
 		//// paso 2
-		if (enemigoArreglo[i]->ObtenerPasoActual() == 2)
-			if (!EsLimitePantalla(enemigoArreglo[i], BORDE_IZQUIERDO))
-				enemigoArreglo[i]->MoverX(-10);//IZQUIERDA
+		if (enemigoArreglo[i]->GetNaveObjeto()->ObtenerPasoActual() == 2)
+			if (!EsLimitePantalla(enemigoArreglo[i]->GetNaveObjeto(), BORDE_IZQUIERDO))
+				enemigoArreglo[i]->GetNaveObjeto()->MoverX(-nivel[NivelActual].VelocidadNaveEnemigo);//IZQUIERDA
 			
 			else
 			{
 				
-				enemigoArreglo[i]->IncrementarPasoActual();
+				enemigoArreglo[i]->GetNaveObjeto()->IncrementarPasoActual();
 			}
 			//// paso 3
-		if (enemigoArreglo[i]->ObtenerPasoActual() == 3)
-			if (!EsLimitePantalla(enemigoArreglo[i], BORDE_SUPERIOR))
-				{enemigoArreglo[i]->MoverY(-10);//ABAJO
+		if (enemigoArreglo[i]->GetNaveObjeto()->ObtenerPasoActual() == 3)
+			if (!EsLimitePantalla(enemigoArreglo[i]->GetNaveObjeto(), BORDE_SUPERIOR))
+				{enemigoArreglo[i]->GetNaveObjeto()->MoverY(-nivel[NivelActual].VelocidadNaveEnemigo);//ABAJO
 		}
 			else
 			{
 		
-				enemigoArreglo[i]->IncrementarPasoActual();
+				enemigoArreglo[i]->GetNaveObjeto()->IncrementarPasoActual();
 			}
 	}
 
@@ -304,7 +311,7 @@ void CGame::Menu()
 			{
 		if (opcionSeleccionada == MODULO_TEXTOS_MENU_OPCION1)
 			{
-			estado = Estado::ESTADO_JUGANDO;
+				estado = Estado::ESTADO_PRE_JUGANDO;
 	}
 
 			if (opcionSeleccionada == MODULO_TEXTOS_MENU_OPCION2)
