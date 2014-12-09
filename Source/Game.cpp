@@ -104,13 +104,15 @@ bool CGame::Start()
 			break;
 		case ESTADO_PRE_JUGANDO:
 			NivelActual=0;
+			vida=1;
+			enemigosEliminados=0;
 			estado= ESTADO_JUGANDO;
 
 			break;
 
 		case Estado::ESTADO_JUGANDO:	//JUGAR	
 			
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < nivel[NivelActual].NumeroEnemigosVisibles; i++)
 			{
 				enemigoArreglo[i]-> GetNaveObjeto() -> Actualizar();
 			}
@@ -149,11 +151,47 @@ bool CGame::Start()
 			if (keys[SDLK_SPACE]){
 				nave->Disparar(NAVE_PROPIA, nivel[NivelActual].BalasMaximas);
 			}
-
-			nave-> Pintar(NAVE_PROPIA);
+			//////////////simulacion de coliciones
+			if(keys [SDLK_x]){//bala enemigo a nuestra nave
+				nave-> simularColision(true);
+			
+			}
+			
+			if(keys [SDLK_c]){//nuestra bala a nave enemigo
+				int enemigoAEliminar= rand()% nivel[NivelActual].NumeroEnemigosVisibles;
+					enemigoArreglo[enemigoAEliminar]->simularColision(true);
+			}
 
 			
-			for (int i = 0; i < 10; i++)
+			if(keys [SDLK_v]){//nuestra nave a nave enemigo
+			}
+			///////////////////////////////////////////////
+			//control de coliciones
+
+			for(int i=0; i<nivel[NivelActual].NumeroEnemigosVisibles; i++){
+				if (enemigoArreglo[i]->estaColicionandoConBala(nave))
+					vida--;
+				if (nave->estaColicionandoConBala(enemigoArreglo[i])){
+					enemigoArreglo[i]->setVisible (false);
+					enemigosEliminados++;
+					nave -> simularColision(false);
+					if (enemigosEliminados < nivel[NivelActual].NumeroEnemigoAEliminar){
+						enemigoArreglo[i]->CrearNuevo();
+					}
+				}
+
+			}
+
+			///////////////////////////////////////
+			if (vida<=0)
+				estado = ESTADO_TERMINANDO;
+			if (enemigosEliminados >= nivel[NivelActual].NumeroEnemigoAEliminar){
+				NivelActual++;
+			
+		}
+			nave-> Pintar(NAVE_PROPIA);
+			
+			for (int i = 0; i < nivel[NivelActual].NumeroEnemigosVisibles; i++)
 			{
 				enemigoArreglo[i]->Pintar(NAVE_ENEMIGO);
 				enemigoArreglo[i]->AutoDispara(nivel[NivelActual].BalasMaximas);
@@ -219,7 +257,7 @@ bool CGame::EsLimitePantalla(Objeto * objeto, int bandera)
 void CGame::MoverEnemigo()
 {
 	
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < nivel[NivelActual].NumeroEnemigosVisibles; i++)
 
 	{
 		//// paso 0

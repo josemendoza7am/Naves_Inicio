@@ -48,4 +48,7 @@ private:
 	int tiempoFrameFinal;
 
 	Estado estado;
+
+	int vida;
+	int enemigosEliminados;
 };

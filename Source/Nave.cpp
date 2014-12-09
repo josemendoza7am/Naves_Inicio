@@ -9,9 +9,22 @@ Nave::Nave(SDL_Surface * screen, char * rutaImagen, int x, int y, int module){
 		bala[i]-> SetVisible(false);
 	}
 	balaVisibles=0;
+	visible =true;
+	colision = false;
+}
+
+void Nave::CrearNuevo(){
+	balaVisibles=0;
+	visible= true;
+	colision=false;
+	for (int i=0; i<MAXIMO_DE_BALAS;i++){
+		bala[i]-> SetVisible(false);
+	}
+	nave ->PonerEn(0,0);//mover en x y y
 }
 
 void Nave:: Pintar (int tipoNave){
+	if (visible){
 	nave ->Pintar();
 	for (int i = 0; i < MAXIMO_DE_BALAS; i++)
 	{
@@ -26,13 +39,13 @@ void Nave:: Pintar (int tipoNave){
 			bala[i]->MoverY(10);
 			break;
 		}
-		
+		}
 	}
 	
 }
 
 void Nave::Disparar(int tipoNave, int Balas){
-	
+	if(visible){
 	bala[balaVisibles]->SetVisible(true);
 	switch (tipoNave)
 	{
@@ -46,11 +59,10 @@ void Nave::Disparar(int tipoNave, int Balas){
 	
 	balaVisibles++;
 	if (balaVisibles>= Balas)
-	{
 		balaVisibles=0;
 
 	}
-
+	
 	
 	
 }
@@ -70,3 +82,16 @@ void Nave::AutoDispara(int Balas){
 	if ((rand() % 100)<1)
 		Disparar(NAVE_ENEMIGO,Balas);
 }
+void Nave::setVisible(bool visible){
+	this->visible=visible;
+}
+bool Nave::estaColicionandoConBala(Nave*nave){
+
+	return colision;
+}
+
+void Nave::simularColision(bool colision){
+	this->colision=colision;
+}
+
+
